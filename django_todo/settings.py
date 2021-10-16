@@ -14,6 +14,10 @@ from pathlib import Path
 import os
 import dj_database_url
 
+# HIDEO if there is a variable named development in the environ its value will be set to that,
+# otherwise is set false (look a DEBUT under here)
+development = os.environ.get('DEVELOPMENT', False)
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -26,11 +30,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-sm-7zao$*o^fyv9xw6msb1t!2-i%&=1_qq#4d7u*e=0twh&vt4')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# HIDEO
+DEBUG = development
 
 # STEP 2
-ALLOWED_HOSTS = [os.environ.get('HEROKU_HOSTNAME')]
-
+if development:
+    ALLOWED_HOSTS = ['localhost']
+else:
+    ALLOWED_HOSTS = [os.environ.get('HEROKU_HOSTNAME')]
 
 # Application definition
 
@@ -78,17 +85,19 @@ WSGI_APPLICATION = 'django_todo.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
-
-DATABASES = {
-    # STEP 3
-    'default': dj_database_url.parse(os.environ.get('DATABASE_URL')) 
-}
+# HIDEO
+if development:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
+else:
+    DATABASES = {
+        # STEP 3
+        'default': dj_database_url.parse(os.environ.get('DATABASE_URL'))
+    }
 
 
 # Password validation
