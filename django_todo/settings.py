@@ -13,10 +13,16 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 from pathlib import Path
 import os
 import dj_database_url
+if os.path.exists("env.py"):
+    import env
 
-# HIDEO if there is a variable named development in the environ its value will be set to that,
+
+# HIDEO if there is a variable named development in env.py its value will be set to true,
 # otherwise is set false (look a DEBUT under here)
-development = os.environ.get('DEVELOPMENT', False)
+if os.environ.get("DEVELOPMENT"):
+    development = True
+else:
+    development = False
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -27,7 +33,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 # STEP 1
-SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-sm-7zao$*o^fyv9xw6msb1t!2-i%&=1_qq#4d7u*e=0twh&vt4')
+SECRET_KEY = os.environ.get('SECRET_KEY', '')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 # HIDEO
